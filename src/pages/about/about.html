@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title text-center>
+      Kierowcy
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content text-center padding>
+	<ion-list>
+		<ion-item *ngFor="let d of drivers; let i=index" text-wrap (click)="toggleGroup(i)" [ngClass]="{active: isGroupShown(i)}">
+    <h2>
+      {{d.driver_label}}
+      <ion-icon color="success" item-right [name]="isGroupShown(i) ? 'arrow-dropdown' : 'arrow-dropright'"></ion-icon>
+    </h2>
+    <div *ngIf="isGroupShown(i)">
+    	<ion-item>
+    		<ion-thumbnail item-start>
+          <img src="assets/img/kierowcy/{{d.position}}.jpg">
+        </ion-thumbnail>
+	    	<h1>{{d.driver_name}} {{d.driver_surname}}</h1>
+	    	<h2>{{d.driver_carbike}}</h2>
+	    	<ion-thumbnail item-end>
+		    	<a href="https://twitter.com/intent/follow?screen_name={{d.twitter}}" onclick="window.open(this.href,'_blank',location=yes); return false;" style="text-decoration:none; color: black;" text-wrap>
+	          <ion-icon name="logo-twitter" style="zoom:2; color: #00aced;"></ion-icon> 
+	         </a>
+	         <a href="https://twitter.com/intent/follow?screen_name={{d.twitter}}" onclick="window.open(this.href,'_blank',location=yes); return false;" style="text-decoration:none; color: black;" text-wrap>
+	          <ion-icon name="logo-facebook" style="zoom:2; color: #3b5998;"></ion-icon> 
+	         </a>
+         </ion-thumbnail>
+	    </ion-item>
+    </div>
+  </ion-item>
+	</ion-list>
+</ion-content>

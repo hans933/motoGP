@@ -1,0 +1,150 @@
+<ion-header text-center>
+  <ion-navbar>
+    <ion-title>MotoGP</ion-title>
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [(ngModel)]="option" color="dark">
+      <ion-segment-button value="wyniki">
+        <ion-icon name="md-clipboard"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button text-on-bottom value="kalendarz">
+        <ion-icon name="md-calendar"></ion-icon>
+      </ion-segment-button>
+      <ion-segment-button value="klasyfikacja">
+         <ion-icon name="md-podium"></ion-icon>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div [ngSwitch]="option" *ngIf="races">
+    <ion-list *ngSwitchCase="'wyniki'">
+      <ion-slides>
+        <ion-slide  *ngFor="let race of races">
+        <ion-item color="" text-center >
+
+              <h1>{{race.event_description}}</h1>
+              <h3>{{race.date}}</h3>
+    
+      </ion-item>
+      <ion-item>
+        <ion-grid>
+            <ion-item color="dark">
+                <ion-row>
+                    <ion-col col-4>Nazwisko</ion-col>
+                    <ion-col>Kraj</ion-col>
+                    <ion-col>Czas</ion-col>
+                    <ion-col>Strata</ion-col>
+                </ion-row>
+            </ion-item>
+            <ion-item color="light" *ngFor="let driver of race.standing">
+                <ion-row>
+                      <ion-col col-4>{{driver.position}}. {{driver.driver_label}}</ion-col>
+                      <ion-col ><img src="assets/img/flags/16/{{driver.driver_country}}.png"></ion-col>
+                      <ion-col>{{driver.time}}</ion-col>
+                      <ion-col>{{driver.gap}}</ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-grid>
+        </ion-item>
+        </ion-slide>
+      </ion-slides>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'kalendarz'" text-center>
+      <ion-slides>
+       <ion-slide *ngFor="let event of calendar.events">
+         <ion-card class="card-background-page">
+           <img src="assets/img/kalendarz/{{event.sequence}}.jpg"/>
+           <div class="card-title">{{event.description}}</div>
+           <div class="card-subtitle">{{event.date_start}}</div>
+           <ion-list *ngFor="let rank of event.podium" inset>
+            <ion-item>
+              <ion-grid>
+                <ion-row>
+                  <ion-col>{{rank.position}}. {{rank.driver_label}}</ion-col>
+                  <ion-col>{{rank.driver_team}}</ion-col>
+                  <ion-col>{{rank.time}}</ion-col>
+                </ion-row>
+              </ion-grid>
+            </ion-item>
+           </ion-list>
+          </ion-card>
+        </ion-slide>
+      </ion-slides>
+    </ion-list>
+
+    <ion-list *ngSwitchCase="'klasyfikacja'">
+      
+      <ion-segment [(ngModel)]="option2" color="dark">
+          <ion-segment-button value="kierowcy">
+            Kierowcy
+          </ion-segment-button>
+          <ion-segment-button value="druzyny">
+            Konstruktorzy
+          </ion-segment-button>
+      </ion-segment>
+
+      <div [ngSwitch]="option2">
+        <ion-list *ngSwitchCase="'kierowcy'" text-center>
+         <ion-item>
+              <ion-grid>
+                <ion-item color="dark">
+                    <ion-row>
+                        <ion-col col-4>Nazwisko</ion-col>
+                        <ion-col>Numer</ion-col>
+                        <ion-col>Kraj</ion-col>
+                        <ion-col col-4>Punkty</ion-col>
+                    </ion-row>
+                </ion-item>
+                <ion-item *ngFor="let driver of drivers">
+                  <ion-row>
+                    <ion-col col-4>{{driver.position}}. {{driver.label}}</ion-col>
+                    <ion-col>{{driver.number}}</ion-col>
+                    <ion-col><img src="assets/img/flags/16/{{driver.country}}.png"></ion-col>
+                    <ion-col col-4>{{driver.points}}</ion-col>
+                  </ion-row>
+                </ion-item>
+              </ion-grid>
+          </ion-item>
+        </ion-list>
+
+        <ion-list *ngSwitchCase="'druzyny'" text-center>
+         <ion-item>
+              <ion-grid>
+                <ion-item color="dark">
+                    <ion-row>
+                        <ion-col col-4>Drużyna</ion-col>
+                        <ion-col>Punkty</ion-col>
+                    </ion-row>
+                </ion-item>
+                <ion-item *ngFor="let team of teams">
+                  <ion-row>
+                    <ion-col col-4>{{team.position}}. {{team.name}}</ion-col>
+                    <ion-col col-4>{{team.points}}</ion-col>
+                  </ion-row>
+                </ion-item>
+              </ion-grid>
+          </ion-item>
+        </ion-list>
+      </div>
+    </ion-list>
+
+    
+  </div>
+
+  <ion-fab right bottom>
+    <button ion-fab color="light"><ion-icon name="arrow-dropleft"></ion-icon></button>
+    <ion-fab-list side="left">
+      <button ion-fab (click)="twitterShare()"><ion-icon name="logo-facebook"></ion-icon></button>
+      <button ion-fab (click)="facebookShare()"><ion-icon name="logo-twitter"></ion-icon></button>
+      <button ion-fab (click)="smsShare()"><ion-icon name="md-chatboxes"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <ion-fab left bottom>
+      <button ion-fab color="light" (click)="regularShare()"><ion-icon name="md-share"></ion-icon></button>
+  </ion-fab>
+
+</ion-content>
